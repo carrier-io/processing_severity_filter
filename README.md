@@ -1,1 +1,1 @@
-# email-integration
+# severity filter integration
