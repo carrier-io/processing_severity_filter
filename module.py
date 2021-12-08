@@ -17,43 +17,28 @@
 
 """ Module """
 from functools import partial
-from pathlib import Path
-
-import flask
-import jinja2
 from pylon.core.tools import log  # pylint: disable=E0611,E0401
 from pylon.core.tools import module  # pylint: disable=E0611,E0401
 
 from .components import render_toggle
 from .rpc_worker import make_dusty_config
-from ..shared.utils.api_utils import add_resource_to_api
 
 
 class Module(module.ModuleModel):
     """ Task module """
 
-    def __init__(self, settings, root_path, context):
-        self.settings = settings
-        self.root_path = root_path
+    def __init__(self, context, descriptor):
         self.context = context
+        self.descriptor = descriptor
 
     def init(self):
         """ Init module """
         log.info("Initializing module severity_filter")
-        NAME = 'processing_severity_filter'
         SECTION_NAME = 'processing'
 
-        bp = flask.Blueprint(
-            NAME, f'plugins.{NAME}.plugin',
-            static_folder=str(Path(__file__).parents[0] / 'static'),
-            static_url_path=f'/{NAME}/static/'
-        )
-        bp.jinja_loader = jinja2.ChoiceLoader([
-            jinja2.loaders.PackageLoader(f'plugins.{NAME}', 'templates'),
-        ])
+        log.info(self.descriptor.name)
 
-        # Register in app
-        self.context.app.register_blueprint(bp)
+        self.descriptor.init_blueprint()
 
         # Register template slot callback
         # self.context.slot_manager.register_callback(f"integration_card_{NAME}", render_integration_card)
@@ -68,13 +53,13 @@ class Module(module.ModuleModel):
         )
 
         self.context.rpc_manager.call.integrations_register(
-            name=NAME,
+            name=self.descriptor.name,
             section=SECTION_NAME,
         )
 
         self.context.rpc_manager.register_function(
             partial(make_dusty_config, self.context),
-            name=f'dusty_config_{NAME}',
+            name=f'dusty_config_{self.descriptor.name}',
         )
 
 

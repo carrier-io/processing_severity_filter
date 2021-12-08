@@ -8,6 +8,6 @@ def render_toggle(context, slot, payload):
     )
     payload['project_integrations'] = integrations
     return render_template(
-        'severity_filter_toggle.html',
+        'processing_severity_filter:severity_filter_toggle.html',
         config=payload
     )
