@@ -1,7 +1,7 @@
 window['processing_processing_severity_filter'] = {
     get_data: () => {
         if ($('#integration_checkbox_processing_severity_filter').prop('checked')) {
-            return $('#processing_severity_processing_severity_filter .selectpicker').val()
+            return $('#processing_severity_filter .selectpicker').val()
         }
     },
     set_data: data => {
