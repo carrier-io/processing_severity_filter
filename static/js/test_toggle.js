@@ -9,5 +9,7 @@ window['processing_processing_severity_filter'] = {
     },
     clear_data: () => {
         $('#processing_severity_filter .selectpicker').val('Info').selectpicker('refresh')
+        $('#integration_checkbox_processing_severity_filter').prop('checked', false)
+        $('#selector_processing_severity_filter').collapse('hide')
     }
 }
