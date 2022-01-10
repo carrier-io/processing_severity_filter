@@ -20,7 +20,7 @@ from functools import partial
 from pylon.core.tools import log  # pylint: disable=E0611,E0401
 from pylon.core.tools import module  # pylint: disable=E0611,E0401
 
-from .components import render_toggle
+from .components import render_test_toggle
 from .rpc_worker import make_dusty_config
 
 
@@ -33,17 +33,14 @@ class Module(module.ModuleModel):
 
     def init(self):
         """ Init module """
-        log.info("Initializing module severity_filter")
+        log.info(f"Initializing module {self.descriptor.name}")
         SECTION_NAME = 'processing'
-
-        log.info(self.descriptor.name)
 
         self.descriptor.init_blueprint()
 
         # Register template slot callback
         # self.context.slot_manager.register_callback(f"integration_card_{NAME}", render_integration_card)
-        self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_toggle)
-
+        self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_test_toggle)
 
         self.context.rpc_manager.call.integrations_register_section(
             name=SECTION_NAME,
