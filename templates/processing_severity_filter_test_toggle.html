@@ -5,9 +5,9 @@
         <div class="card-header">
             <div class="d-flex">
                 <h9 class="flex-grow-1" style="line-height: 24px">Minimal Severity Filter</h9>
-{#                <button type="button" class="btn btn-24 btn-action" data-toggle="collapse"#}
-{#                        data-target="#settings_{{ integration_name }}" aria-expanded="false"><i class="fas fa-cog"></i>#}
-{#                </button>#}
+                {#                <button type="button" class="btn btn-24 btn-action" data-toggle="collapse"#}
+                {#                        data-target="#settings_{{ integration_name }}" aria-expanded="false"><i class="fas fa-cog"></i>#}
+                {#                </button>#}
                 <label class="custom-toggle">
                     <input type="checkbox" data-target="#selector_{{ integration_name }}" aria-expanded="false"
                            data-toggle="collapse"
@@ -19,11 +19,9 @@
         <div class="row">
             <div class="collapse col-12 mb-3 pl-0" id="selector_{{ integration_name }}">
                 <select class="selectpicker" data-style="btn-secondary">
-                    <option>Info</option>
-                    <option>Critical</option>
-                    <option>High</option>
-                    <option>Medium</option>
-                    <option>Low</option>
+                    {% for i in ['info', 'critical', 'high', 'medium', 'low'] %}
+                        <option {% if i == 'info' %}selected{% endif %}>{{ i | capitalize }}</option>
+                    {% endfor %}
                 </select>
             </div>
         </div>
