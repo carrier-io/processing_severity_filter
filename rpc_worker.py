@@ -14,3 +14,9 @@ def make_dusty_config(context, test_params, scanner_params):
     log.info("Result: %s", result)
     #
     return result
+
+
+def security_test_create_integration_validate(data: str, **kwargs) -> str:
+    if data.lower() in {'info', 'critical', 'high', 'medium', 'low'}:
+        return data
+    raise ValueError(f'{data.lower()} if not in the available range')
