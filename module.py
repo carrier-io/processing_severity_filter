@@ -16,13 +16,8 @@
 #   limitations under the License.
 
 """ Module """
-import functools
-from functools import partial
 from pylon.core.tools import log  # pylint: disable=E0611,E0401
 from pylon.core.tools import module  # pylint: disable=E0611,E0401
-
-from .components import render_test_toggle
-from .rpc_worker import make_dusty_config, security_test_create_integration_validate
 
 
 class Module(module.ModuleModel):
@@ -34,20 +29,16 @@ class Module(module.ModuleModel):
 
     def init(self):
         """ Init module """
-        log.info(f"Initializing module {self.descriptor.name}")
+        log.info("Initializing module")
         SECTION_NAME = 'processing'
 
         self.descriptor.init_blueprint()
-
-        # Register template slot callback
-        # self.context.slot_manager.register_callback(f"integration_card_{NAME}", render_integration_card)
-        self.context.slot_manager.register_callback(f"security_{SECTION_NAME}", render_test_toggle)
 
         self.context.rpc_manager.call.integrations_register_section(
             name=SECTION_NAME,
             integration_description='Manage processing',
             test_planner_description='Specify processing tools. You may also set processors in <a '
-                                     'href="/?chapter=Configuration&module=Integrations&page=all">Integrations</a> '
+                                     'href="{}">Integrations</a> '.format('/-/configuration/integrations/')
         )
 
         self.context.rpc_manager.call.integrations_register(
@@ -55,16 +46,10 @@ class Module(module.ModuleModel):
             section=SECTION_NAME,
         )
 
-        self.context.rpc_manager.register_function(
-            partial(make_dusty_config, self.context),
-            name=f'dusty_config_{self.descriptor.name}',
-        )
+        self.descriptor.init_rpcs()
 
-        # self.context.rpc_manager.register_function(
-        #     security_test_create_integration_validate,
-        #     name=f'security_test_create_integration_validate_{self.descriptor.name}',
-        # )
+        self.descriptor.init_slots()
 
     def deinit(self):  # pylint: disable=R0201
         """ De-init module """
-        log.info("De-initializing severity_filter")
+        log.info("De-initializing")
