@@ -1,0 +1,19 @@
+{% set integration_name = 'processing_severity_filter' %}
+{% set display_name = 'Minimal Severity Filter' %}
+
+
+<Test-Integration-Item
+        integration_name="{{ integration_name }}"
+        display_name="{{ display_name }}"
+        :project_integrations="[
+            {description: 'Info', id: 'info', is_default: true},
+            {description: 'Critical', id: 'critical'},
+            {description: 'High', id: 'high'},
+            {description: 'Medium', id: 'medium'},
+            {description: 'Low', id: 'low'},
+        ]"
+>
+    <template #selector="{selected_integration, is_selected}">
+        <div class="security_integration_item" data-name="processing_severity_filter"></div>
+    </template>
+</Test-Integration-Item>
